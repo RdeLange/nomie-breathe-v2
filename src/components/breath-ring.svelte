@@ -29,6 +29,37 @@
     dim?: boolean;
   } = $props();
 
+  // The text in the disc is black or white, whichever reads better on the user's own colour. The words sit at the centre of
+  // the disc, where its gradient is at 0.45 opacity (the first stop), so that is the fill checked, over the page (--page, read
+  // from the ring's parent once it is on screen).
+  let host: HTMLDivElement | undefined = $state();
+  let page = $state('#F2F2F7');
+  $effect(() => {
+    if (!host) return;
+    const v = getComputedStyle(host).getPropertyValue('--page').trim();
+    if (v) page = v;
+  });
+  const toRgb = (hex: string): number[] | null => {
+    const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+    if (!m) return null;
+    const n = parseInt(m[1], 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+  const luminance = (c: number[]) => {
+    const f = (v: number) => { const x = v / 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); };
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]);
+  };
+  const ratio = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  const inkFor = (hex: string, pageHex: string): '#000' | '#fff' => {
+    const c = toRgb(hex);
+    const bg = toRgb(pageHex);
+    if (!c || !bg) return '#fff';
+    const centre = 0.45;
+    const contrast = (ink: number) => ratio(luminance(c.map((v, i) => centre * v + (1 - centre) * bg[i])), ink);
+    return contrast(0) >= contrast(1) ? '#000' : '#fff';
+  };
+  let ink = $derived(inkFor(color, page));
+
   const R = 100;
   const C = 2 * Math.PI * R;
   const gradient = `breath-grad-${Math.random().toString(36).slice(2, 8)}`;
@@ -48,7 +79,7 @@
   const innerRadius = $derived(34 + 58 * inner);
 </script>
 
-<div class="ring" class:dim>
+<div class="ring" bind:this={host} class:dim>
   <svg viewBox="0 0 240 240" role="img" aria-label="{label}. {sub}">
     <defs>
       <radialGradient id={gradient} cx="50%" cy="50%" r="50%">
@@ -81,7 +112,7 @@
     <circle cx={dot.x} cy={dot.y} r="8" class="dot" stroke={color} />
   </svg>
 
-  <div class="words" aria-hidden="true">
+  <div class="words" aria-hidden="true" style="--ink: {ink}; --ink-shadow: {ink === '#000' ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.35)'}">
     <p class="label">{label}</p>
     <p class="sub">{sub}</p>
   </div>
@@ -142,15 +173,15 @@
     margin: 0;
     font-size: calc(20px * var(--scale));
     font-weight: 700;
-    color: #fff;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+    color: var(--ink);
+    text-shadow: 0 1px 6px var(--ink-shadow);
   }
   .sub {
     margin: 2px 0 0;
     font-size: calc(15px * var(--scale));
     font-weight: 600;
-    color: #fff;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+    color: var(--ink);
+    text-shadow: 0 1px 6px var(--ink-shadow);
     font-variant-numeric: tabular-nums;
   }
   @media (prefers-reduced-motion: reduce) {
