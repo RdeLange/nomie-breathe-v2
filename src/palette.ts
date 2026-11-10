@@ -32,3 +32,7 @@ const GLASS_LIGHT: Glass = { fill: 'rgba(255,255,255,0.5)', edge: 'rgba(255,255,
 const GLASS_DARK: Glass = { fill: 'rgba(40,40,44,0.45)', edge: 'rgba(255,255,255,0.22)', blur: 'blur(16px) saturate(180%)', shadow: '0 8px 24px rgba(0,0,0,0.5)' };
 
 export const glassFrom = (prefs: any): Glass => (prefs?.theme === 'dark' ? GLASS_DARK : GLASS_LIGHT);
+
+// Tint as text on a grey chip (the fill is #E5E5EA): light mode uses a darker blue, so the text reaches 4.5:1.
+// Dark mode keeps the tint. Only chips use this role; buttons and links keep --tint.
+export const tintTextFrom = (prefs: any): string => (prefs?.theme === 'dark' ? '#4DB3FF' : '#0764B8');

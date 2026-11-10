@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { breath } from './breath-state.svelte';
   import { blankExercise, fromTemplate, TEMPLATES, type Exercise } from './breathing/exercises';
-  import { paletteFrom, glassFrom, type Palette, type Glass } from './palette';
+  import { paletteFrom, glassFrom, tintTextFrom, type Palette, type Glass } from './palette';
   import { onPrefsChange } from './prefs-live';
   import Home from './screens/home.svelte';
   import Prepare from './screens/prepare.svelte';
@@ -22,6 +22,7 @@
   let view = $state<View>({ name: 'home' });
   let palette = $state<Palette>(paletteFrom(undefined));
   let glass = $state<Glass>(glassFrom(undefined));
+  let tintText = $state(tintTextFrom(undefined));
   let scale = $state(1);
 
   // while a breathing runs, or its summary is on screen, it has the screen
@@ -35,6 +36,7 @@
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
     glass = glassFrom(plugin.prefs);
+    tintText = tintTextFrom(plugin.prefs);
     scale = plugin.prefs.fontScale || 1;
   };
 
@@ -68,7 +70,7 @@
   });
 </script>
 
-<div class="root" style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --good: {palette.good}; --danger: {palette.danger}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --scale: {scale};">
+<div class="root" style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --good: {palette.good}; --danger: {palette.danger}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --tint-text: {tintText}; --scale: {scale};">
   <header class="top">
     <div class="title">
       <span aria-hidden="true">🫁</span>
