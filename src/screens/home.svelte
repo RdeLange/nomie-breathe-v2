@@ -2,7 +2,7 @@
   import { breath } from '../breath-state.svelte';
   import { patternText } from '../breathing/pattern';
   import { thisWeek } from '../history';
-  import { shortDate } from '../format';
+  import { shortDate } from '../locale.svelte';
 
   let { open, create }: { open: (id: string) => void; create: () => void } = $props();
 

@@ -116,7 +116,7 @@
   .controls { display: flex; align-items: center; gap: 14px; }
   .controls button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--fill); color: var(--text); font-size: calc(18px * var(--scale)); cursor: pointer; }
   .controls button:disabled { opacity: 0.35; }
-  .count { min-width: 28px; text-align: center; font-size: calc(18px * var(--scale)); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .count { min-width: 28px; text-align: center; font-family: var(--ios-font-rounded); font-size: calc(18px * var(--scale)); font-weight: 700; font-variant-numeric: tabular-nums; }
   .problem { color: var(--danger); font-weight: 600; }
   .primary { display: block; width: 100%; margin-top: 14px; padding: 14px; border: 0; border-radius: 14px; background: var(--tint); color: var(--on-tint); font: inherit; font-size: calc(17px * var(--scale)); font-weight: 600; cursor: pointer; }
   .primary:disabled { opacity: 0.4; }

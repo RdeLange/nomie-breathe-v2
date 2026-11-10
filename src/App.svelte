@@ -2,8 +2,9 @@
   import { onMount } from 'svelte';
   import { breath } from './breath-state.svelte';
   import { blankExercise, fromTemplate, TEMPLATES, type Exercise } from './breathing/exercises';
-  import { paletteFrom, type Palette } from './palette';
+  import { paletteFrom, glassFrom, tintTextFrom, type Palette, type Glass, dangerTextFrom } from './palette';
   import { onPrefsChange } from './prefs-live';
+  import { setLocale } from './locale.svelte';
   import Home from './screens/home.svelte';
   import Prepare from './screens/prepare.svelte';
   import Breathing from './screens/breathing.svelte';
@@ -21,6 +22,9 @@
 
   let view = $state<View>({ name: 'home' });
   let palette = $state<Palette>(paletteFrom(undefined));
+  let dangerText = $state(dangerTextFrom(undefined));
+  let glass = $state<Glass>(glassFrom(undefined));
+  let tintText = $state(tintTextFrom(undefined));
   let scale = $state(1);
 
   // while a breathing runs, or its summary is on screen, it has the screen
@@ -33,6 +37,10 @@
   const applyNomieValues = (plugin: any) => {
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
+    setLocale(plugin.prefs);
+    dangerText = dangerTextFrom(plugin.prefs);
+    glass = glassFrom(plugin.prefs);
+    tintText = tintTextFrom(plugin.prefs);
     scale = plugin.prefs.fontScale || 1;
   };
 
@@ -66,7 +74,7 @@
   });
 </script>
 
-<div class="root" style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --good: {palette.good}; --danger: {palette.danger}; --scale: {scale};">
+<div class="root" style="--page: {palette.page}; --card: {palette.card}; --card-inner: {palette.cardInner}; --text: {palette.text}; --muted: {palette.textSecondary}; --line: {palette.separator}; --fill: {palette.fill}; --tint: {palette.tint}; --on-tint: {palette.onTint}; --tint-soft: {palette.tintSoft}; --good: {palette.good}; --danger: {dangerText}; --glass-fill: {glass.fill}; --glass-edge: {glass.edge}; --glass-blur: {glass.blur}; --glass-shadow: {glass.shadow}; --tint-text: {tintText}; --scale: {scale};">
   <header class="top">
     <div class="title">
       <span aria-hidden="true">🫁</span>
@@ -122,11 +130,16 @@
 
 <style>
   .root { box-sizing: border-box; min-height: 100vh; max-width: 520px; margin: 0 auto; padding: 16px; background: var(--page); color: var(--text); font-size: calc(16px * var(--scale)); line-height: 1.4; }
-  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  /* the plugin page fills the frame, so the glass bar sits at the top edge */
+  /* the app's text: its iOS font stack (main.css --ios-font), with the app's smoothing */
+  :global(body) { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; -webkit-font-smoothing: antialiased; --ios-font-rounded: ui-rounded, -apple-system, system-ui, sans-serif; }
+  /* the header is a Liquid Glass bar (D-glass): it stays at the top and the content scrolls under it */
+  .top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; margin: -16px -16px 8px; padding: 16px 16px 10px; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-edge); }
   .title { display: flex; align-items: center; gap: 8px; }
   h1 { margin: 0; font-size: calc(22px * var(--scale)); font-weight: 700; }
   h2 { margin: 12px 0 8px; font-size: calc(13px * var(--scale)); font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .icons { display: flex; gap: 6px; }
+  /* the icon buttons sit in the glass header, so they are a solid fill (glass never sits on glass) */
   .icons button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--fill); color: var(--text); font-size: calc(17px * var(--scale)); cursor: pointer; }
   .muted { color: var(--muted); font-size: calc(14px * var(--scale)); }
   .list { display: flex; flex-direction: column; gap: 8px; }
