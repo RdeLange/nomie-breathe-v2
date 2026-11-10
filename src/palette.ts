@@ -36,3 +36,7 @@ export const glassFrom = (prefs: any): Glass => (prefs?.theme === 'dark' ? GLASS
 // Tint as text on a grey chip (the fill is #E5E5EA): light mode uses a darker blue, so the text reaches 4.5:1.
 // Dark mode keeps the tint. Only chips use this role; buttons and links keep --tint.
 export const tintTextFrom = (prefs: any): string => (prefs?.theme === 'dark' ? '#4DB3FF' : '#0764B8');
+
+// Danger as text (a delete or a warning on a grey fill): the app's red is 4.29:1 on #E5E5EA in light mode, so the text uses a darker red
+// in light mode and a lighter red in dark mode. Both reach 4.5:1 on the fill. Buttons keep the palette's danger.
+export const dangerTextFrom = (prefs: any): string => (prefs?.theme === 'dark' ? '#FF8A84' : '#B0001A');
