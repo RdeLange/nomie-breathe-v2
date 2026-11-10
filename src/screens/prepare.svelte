@@ -73,7 +73,7 @@
   .controls { display: flex; align-items: center; gap: 14px; }
   .controls button { width: 40px; height: 40px; border: 0; border-radius: 50%; background: var(--fill); color: var(--text); font-size: calc(20px * var(--scale)); cursor: pointer; }
   .controls button:disabled { opacity: 0.35; }
-  .count { min-width: 32px; text-align: center; font-size: calc(22px * var(--scale)); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .count { min-width: 32px; text-align: center; font-family: var(--ios-font-rounded); font-size: calc(22px * var(--scale)); font-weight: 700; font-variant-numeric: tabular-nums; }
   .primary { display: block; width: 100%; margin-top: 12px; padding: 14px; border: 0; border-radius: 14px; background: var(--tint); color: var(--on-tint); font: inherit; font-size: calc(17px * var(--scale)); font-weight: 600; cursor: pointer; }
   .row-buttons { display: flex; gap: 8px; margin-top: 8px; }
   .ghost { flex: 1; padding: 12px; border: 0; border-radius: 12px; background: var(--fill); color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }

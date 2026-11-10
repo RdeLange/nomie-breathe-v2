@@ -182,6 +182,7 @@
     font-weight: 600;
     color: var(--ink);
     text-shadow: 0 1px 6px var(--ink-shadow);
+    font-family: var(--ios-font-rounded);
     font-variant-numeric: tabular-nums;
   }
   @media (prefers-reduced-motion: reduce) {
