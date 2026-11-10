@@ -124,12 +124,16 @@
 
 <style>
   .root { box-sizing: border-box; min-height: 100vh; max-width: 520px; margin: 0 auto; padding: 16px; background: var(--page); color: var(--text); font-size: calc(16px * var(--scale)); line-height: 1.4; }
-  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  /* the plugin page fills the frame, so the glass bar sits at the top edge */
+  :global(body) { margin: 0; }
+  /* the header is a Liquid Glass bar (D-glass): it stays at the top and the content scrolls under it */
+  .top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; margin: -16px -16px 8px; padding: 16px 16px 10px; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-edge); }
   .title { display: flex; align-items: center; gap: 8px; }
   h1 { margin: 0; font-size: calc(22px * var(--scale)); font-weight: 700; }
   h2 { margin: 12px 0 8px; font-size: calc(13px * var(--scale)); font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
   .icons { display: flex; gap: 6px; }
-  .icons button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--fill); color: var(--text); font-size: calc(17px * var(--scale)); cursor: pointer; }
+  /* round buttons are Liquid Glass (D-glass): the glass fill, a thin edge, and the blur */
+  .icons button { width: 36px; height: 36px; border: 1px solid var(--glass-edge); border-radius: 50%; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); color: var(--text); font-size: calc(17px * var(--scale)); cursor: pointer; }
   .muted { color: var(--muted); font-size: calc(14px * var(--scale)); }
   .list { display: flex; flex-direction: column; gap: 8px; }
   .choice { display: flex; align-items: flex-start; gap: 12px; width: 100%; padding: 14px 16px; border: 0; border-radius: 16px; background: var(--card); color: var(--text); font: inherit; text-align: left; cursor: pointer; }
