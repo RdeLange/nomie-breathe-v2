@@ -1,19 +1,20 @@
 <script lang="ts">
+  import { t } from '../i18n/index.svelte';
   let { back }: { back: () => void } = $props();
 </script>
 
 <section class="card">
-  <p class="caption">About</p>
-  <p>Guided breathing with a circle that grows as you breathe in and shrinks as you breathe out. A dot goes round the ring over each breath, so you always know where you are.</p>
-  <p>The six classic breathings are the ones of Nomie Breathe v1. Make your own with any lengths for the four parts of a breath.</p>
+  <p class="caption">{t('aboutHead')}</p>
+  <p>{t('infoAbout1')}</p>
+  <p>{t('infoAbout2')}</p>
 </section>
 
 <section class="card">
-  <p class="caption">Before you start</p>
-  <p>Find a comfortable position and breathe through your nose. You get three seconds to get ready before the first breath.</p>
+  <p class="caption">{t('beforeStart')}</p>
+  <p>{t('infoBefore')}</p>
 </section>
 
-<button class="ghost" onclick={back}>Back</button>
+<button class="ghost" onclick={back}>{t('back')}</button>
 
 <style>
   .card { padding: 14px 16px; border-radius: 16px; background: var(--card); margin: 12px 0; line-height: 1.45; }

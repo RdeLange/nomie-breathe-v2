@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { t } from '../i18n/index.svelte';
   import { breath } from '../breath-state.svelte';
   import type { Settings } from '../settings';
 
@@ -14,57 +15,57 @@
 </script>
 
 <section class="card">
-  <p class="caption">Trackers</p>
+  <p class="caption">{t('trackers')}</p>
   <div class="row">
-    <span>Breaths</span>
-    <span class="muted">{breath.settings.repeatsTracker ? `#${breath.settings.repeatsTracker}` : 'None'}</span>
+    <span>{t('breathsTracker')}</span>
+    <span class="muted">{breath.settings.repeatsTracker ? `#${breath.settings.repeatsTracker}` : t('none')}</span>
   </div>
   <div class="actions">
-    <button class="chip" onclick={() => pick('repeatsTracker')}>{breath.settings.repeatsTracker ? 'Change' : 'Choose'}</button>
-    {#if breath.settings.repeatsTracker}<button class="chip danger" onclick={() => update({ repeatsTracker: null })}>Remove</button>{/if}
+    <button class="chip" onclick={() => pick('repeatsTracker')}>{breath.settings.repeatsTracker ? t('change') : t('choose')}</button>
+    {#if breath.settings.repeatsTracker}<button class="chip danger" onclick={() => update({ repeatsTracker: null })}>{t('remove')}</button>{/if}
   </div>
   <div class="row">
-    <span>Time (in seconds)</span>
-    <span class="muted">{breath.settings.minutesTracker ? `#${breath.settings.minutesTracker}` : 'None'}</span>
+    <span>{t('timeSec')}</span>
+    <span class="muted">{breath.settings.minutesTracker ? `#${breath.settings.minutesTracker}` : t('none')}</span>
   </div>
   <div class="actions">
-    <button class="chip" onclick={() => pick('minutesTracker')}>{breath.settings.minutesTracker ? 'Change' : 'Choose'}</button>
-    {#if breath.settings.minutesTracker}<button class="chip danger" onclick={() => update({ minutesTracker: null })}>Remove</button>{/if}
+    <button class="chip" onclick={() => pick('minutesTracker')}>{breath.settings.minutesTracker ? t('change') : t('choose')}</button>
+    {#if breath.settings.minutesTracker}<button class="chip danger" onclick={() => update({ minutesTracker: null })}>{t('remove')}</button>{/if}
   </div>
 </section>
 
 <section class="card">
-  <p class="caption">Timeline</p>
+  <p class="caption">{t('timeline')}</p>
   <label class="field">
-    <span class="muted">Text of the log</span>
+    <span class="muted">{t('logText')}</span>
     <textarea rows="3" value={breath.settings.logEntry} oninput={(e) => update({ logEntry: e.currentTarget.value })}></textarea>
-    <span class="hint">&lt;breathing&gt; is the exercise, &lt;repeats&gt; the breaths, &lt;minutes&gt; the time.</span>
+    <span class="hint">{t('logHint')}</span>
   </label>
   <div class="row">
-    <span>Ask before logging</span>
-    <button class="toggle" class:on={breath.settings.askBeforeLog} aria-pressed={breath.settings.askBeforeLog} aria-label="Ask before logging" onclick={() => update({ askBeforeLog: !breath.settings.askBeforeLog })}></button>
+    <span>{t('askBeforeLog')}</span>
+    <button class="toggle" class:on={breath.settings.askBeforeLog} aria-pressed={breath.settings.askBeforeLog} aria-label={t('askBeforeLog')} onclick={() => update({ askBeforeLog: !breath.settings.askBeforeLog })}></button>
   </div>
 </section>
 
 <section class="card">
   <div class="row">
-    <span>Sound</span>
-    <button class="toggle" class:on={breath.settings.sound} aria-pressed={breath.settings.sound} aria-label="Sound" onclick={() => update({ sound: !breath.settings.sound })}></button>
+    <span>{t('sound')}</span>
+    <button class="toggle" class:on={breath.settings.sound} aria-pressed={breath.settings.sound} aria-label={t('sound')} onclick={() => update({ sound: !breath.settings.sound })}></button>
   </div>
-  <p class="hint">A tone when you breathe in and when you breathe out.</p>
+  <p class="hint">{t('soundHint')}</p>
   <div class="row">
-    <span>Vibration</span>
-    <button class="toggle" class:on={breath.settings.vibrate} aria-pressed={breath.settings.vibrate} aria-label="Vibration" onclick={() => update({ vibrate: !breath.settings.vibrate })}></button>
+    <span>{t('vibration')}</span>
+    <button class="toggle" class:on={breath.settings.vibrate} aria-pressed={breath.settings.vibrate} aria-label={t('vibration')} onclick={() => update({ vibrate: !breath.settings.vibrate })}></button>
   </div>
-  <p class="hint">On the devices that can vibrate, at each change of breath.</p>
+  <p class="hint">{t('vibrationHint')}</p>
 </section>
 
 <section class="card">
   <p class="muted">{breath.history.length} sessions in your history.</p>
-  <button class="link danger" onclick={() => breath.clearHistory()}>Clear the history</button>
+  <button class="link danger" onclick={() => breath.clearHistory()}>{t('clearHistory')}</button>
 </section>
 
-<button class="ghost" onclick={back}>Back</button>
+<button class="ghost" onclick={back}>{t('back')}</button>
 
 <style>
   .card { padding: 14px 16px; border-radius: 16px; background: var(--card); margin: 12px 0; }

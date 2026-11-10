@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { t } from '../i18n/index.svelte';
   import { breath } from '../breath-state.svelte';
   import { cycleMs, phasesOf, patternText, PHASE_LABEL } from '../breathing/pattern';
   import { MAX_REPEATS, MIN_REPEATS, type Exercise } from '../breathing/exercises';
@@ -27,12 +28,12 @@
 {#if exercise.description}<p class="muted">{exercise.description}</p>{/if}
 
 <section class="card">
-  <p class="caption">One breath</p>
+  <p class="caption">{t('oneBreath')}</p>
   <div class="parts">
     {#each phases as part (part.id + part.start)}
-      <div class="part" style="flex: {part.end - part.start}" title="{PHASE_LABEL[part.id]} {(part.end - part.start) / 1000} s">
+      <div class="part" style="flex: {part.end - part.start}" title="{PHASE_LABEL[part.id]} {t('secondsShort', { s: (part.end - part.start) / 1000 })}">
         <span class="part-label">{PHASE_LABEL[part.id]}</span>
-        <span class="part-time">{(part.end - part.start) / 1000} s</span>
+        <span class="part-time">{t('secondsShort', { s: (part.end - part.start) / 1000 })}</span>
       </div>
     {/each}
   </div>
@@ -41,20 +42,20 @@
 
 <section class="card">
   <div class="stepper">
-    <span>Breaths</span>
+    <span>{t('breathsLabel')}</span>
     <div class="controls">
-      <button aria-label="Fewer breaths" disabled={breaths <= MIN_REPEATS} onclick={() => (breaths = Math.max(MIN_REPEATS, breaths - 1))}>−</button>
+      <button aria-label={t('fewerBreaths')} disabled={breaths <= MIN_REPEATS} onclick={() => (breaths = Math.max(MIN_REPEATS, breaths - 1))}>−</button>
       <span class="count">{breaths}</span>
-      <button aria-label="More breaths" disabled={breaths >= MAX_REPEATS} onclick={() => (breaths = Math.min(MAX_REPEATS, breaths + 1))}>+</button>
+      <button aria-label={t('moreBreaths')} disabled={breaths >= MAX_REPEATS} onclick={() => (breaths = Math.min(MAX_REPEATS, breaths + 1))}>+</button>
     </div>
   </div>
   <p class="muted">About {minutes} of breathing{week ? `, done ${week} time${week === 1 ? '' : 's'} before` : ''}.</p>
 </section>
 
-<button class="primary" onclick={() => start(breaths)}>Start</button>
+<button class="primary" onclick={() => start(breaths)}>{t('start')}</button>
 <div class="row-buttons">
-  <button class="ghost" onclick={edit}>Edit</button>
-  <button class="ghost" onclick={back}>Back</button>
+  <button class="ghost" onclick={edit}>{t('edit')}</button>
+  <button class="ghost" onclick={back}>{t('back')}</button>
 </div>
 
 <style>

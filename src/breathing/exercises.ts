@@ -1,3 +1,4 @@
+import { t } from '../i18n/index.svelte';
 // The breathing exercises: the six predefined ones of v1, and the ones the user makes. Their rules live here.
 import type { Pattern } from './pattern';
 
@@ -19,38 +20,38 @@ export const COLOURS = ['#C47ADA', '#90BAEE', '#75BAFA', '#FBE66E', '#F5B969', '
 // The predefined exercises of v1, the same patterns and colours
 export const TEMPLATES: Array<Omit<Exercise, 'id'>> = [
   {
-    name: 'Deep breathing',
-    description: 'An easy way to relax and let your worries go. Also called belly breathing, it helps ease stress and can lower your blood pressure.',
+    get name() { return t('deepName'); },
+    get description() { return t('deepDesc'); },
     color: '#C47ADA',
     pattern: { inhale: 4, hold1: 4, exhale: 6, hold2: 0, repeats: 6 },
   },
   {
-    name: 'Continuous breathing',
-    description: 'A technique used by singers and wind players to keep a steady tone. It helps you keep sound going for long periods.',
+    get name() { return t('continuousName'); },
+    get description() { return t('continuousDesc'); },
     color: '#90BAEE',
     pattern: { inhale: 4, hold1: 0, exhale: 4, hold2: 2, repeats: 7 },
   },
   {
-    name: 'Box breathing',
-    description: 'Used by athletes, nurses and others who need to stay calm under pressure. Good for meditation and for reducing stress.',
+    get name() { return t('boxName'); },
+    get description() { return t('boxDesc'); },
     color: '#75BAFA',
     pattern: { inhale: 4, hold1: 4, exhale: 4, hold2: 4, repeats: 10 },
   },
   {
-    name: 'Equal breathing',
-    description: 'Breathe in for as long as you breathe out. A smooth and steady breath can bring balance and calm.',
+    get name() { return t('equalName'); },
+    get description() { return t('equalDesc'); },
     color: '#FBE66E',
     pattern: { inhale: 4, hold1: 0, exhale: 4, hold2: 0, repeats: 4 },
   },
   {
-    name: '4-7-8 breathing',
-    description: 'A pattern that aims to reduce anxiety and help you get to sleep.',
+    get name() { return t('relaxName'); },
+    get description() { return t('relaxDesc'); },
     color: '#F5B969',
     pattern: { inhale: 4, hold1: 7, exhale: 8, hold2: 0, repeats: 8 },
   },
   {
-    name: 'Rhythmic breathing',
-    description: 'A simple technique for beginners, suitable for anyone who can breathe without difficulty.',
+    get name() { return t('rhythmicName'); },
+    get description() { return t('rhythmicDesc'); },
     color: '#EDBD4A',
     pattern: { inhale: 6, hold1: 3, exhale: 6, hold2: 3, repeats: 9 },
   },
@@ -58,13 +59,13 @@ export const TEMPLATES: Array<Omit<Exercise, 'id'>> = [
 
 // The first thing wrong with an exercise, or null when it can be saved
 export const exerciseProblem = (e: Exercise): string | null => {
-  if (!e.name.trim()) return 'Give the exercise a name.';
+  if (!e.name.trim()) return t('giveName');
   const { inhale, hold1, exhale, hold2, repeats } = e.pattern;
-  if (inhale < 1) return 'Breathing in needs at least one second.';
+  if (inhale < 1) return t('inhaleMin');
   if ([hold1, exhale, hold2].some((s) => s < 0 || s > MAX_PHASE_SECONDS) || inhale > MAX_PHASE_SECONDS) {
-    return `Each part is between 0 and ${MAX_PHASE_SECONDS} seconds.`;
+    return t('partRange', { max: MAX_PHASE_SECONDS });
   }
-  if (repeats < MIN_REPEATS || repeats > MAX_REPEATS) return `The breaths are between ${MIN_REPEATS} and ${MAX_REPEATS}.`;
+  if (repeats < MIN_REPEATS || repeats > MAX_REPEATS) return t('breathsRange', { min: MIN_REPEATS, max: MAX_REPEATS });
   return null;
 };
 

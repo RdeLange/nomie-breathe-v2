@@ -1,3 +1,5 @@
+import { t } from './i18n/index.svelte';
+import { EN_LOG_ENTRY } from './settings';
 // The note a breathing session writes to the timeline, and the text it uses. v1 replaced <breathing>, <repeats> and <minutes>.
 import type { Settings } from './settings';
 
@@ -10,7 +12,7 @@ export type Finished = {
 };
 
 // "3 minutes 12 seconds", as v1 wrote the time
-export const timeText = (seconds: number): string => `${Math.floor(seconds / 60)} minutes ${Math.round(seconds % 60)} seconds`;
+export const timeText = (seconds: number): string => t('timeText', { minutes: Math.floor(seconds / 60), seconds: Math.round(seconds % 60) });
 
 // The log text with the placeholders filled in
 export const logText = (entry: string, finished: Finished): string =>
@@ -24,5 +26,6 @@ export const breathingNote = (settings: Settings, finished: Finished): string =>
   const lines: string[] = [];
   if (settings.minutesTracker) lines.push(`#${settings.minutesTracker}(${Math.round(finished.seconds)})`);
   if (settings.repeatsTracker) lines.push(`#${settings.repeatsTracker}(${finished.repeats})`);
-  return `Breathe 🫁:\n${logText(settings.logEntry, finished)}\n\n${lines.length ? lines.join('\n') : ''}`;
+  const template = settings.logEntry === EN_LOG_ENTRY ? t('logEntryDefault') : settings.logEntry;
+  return `${t('noteHead')}:\n${logText(template, finished)}\n\n${lines.length ? lines.join('\n') : ''}`;
 };

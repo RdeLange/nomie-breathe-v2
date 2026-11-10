@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { t } from '../i18n/index.svelte';
   import { breath } from '../breath-state.svelte';
   import { patternText } from '../breathing/pattern';
   import { thisWeek } from '../history';
@@ -11,12 +12,12 @@
 </script>
 
 <section class="card week">
-  <p class="caption">This week</p>
-  <p class="big">{week.sessions} <span class="muted">{week.sessions === 1 ? 'session' : 'sessions'}</span></p>
-  <p class="muted">{week.minutes} minutes of breathing</p>
+  <p class="caption">{t('thisWeek')}</p>
+  <p class="big">{week.sessions} <span class="muted">{week.sessions === 1 ? t('sessionOne') : t('sessionMany')}</span></p>
+  <p class="muted">{t('minutesOfBreathing', { minutes: week.minutes })}</p>
 </section>
 
-<h2>Your breathing</h2>
+<h2>{t('yourBreathing')}</h2>
 {#each breath.exercises as exercise (exercise.id)}
   <button class="exercise" onclick={() => open(exercise.id)}>
     <span class="dot" style="background: {exercise.color}"></span>
@@ -27,13 +28,13 @@
     <span class="chevron" aria-hidden="true">›</span>
   </button>
 {:else}
-  <p class="muted pad">No exercises left. Add one of the classic breathings again, or make your own.</p>
+  <p class="muted pad">{t('noExercises')}</p>
 {/each}
 
-<button class="primary" onclick={create}>New breathing exercise</button>
+<button class="primary" onclick={create}>{t('newExercise')}</button>
 
 {#if recent.length}
-  <h2>Recent</h2>
+  <h2>{t('recent')}</h2>
   <section class="card">
     {#each recent as entry (entry.at)}
       <div class="row">

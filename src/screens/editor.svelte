@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { t } from '../i18n/index.svelte';
   import { breath } from '../breath-state.svelte';
   import { COLOURS, MAX_PHASE_SECONDS, MAX_REPEATS, MIN_REPEATS, exerciseProblem, newExerciseId, type Exercise } from '../breathing/exercises';
   import { patternText, PHASE_LABEL } from '../breathing/pattern';
@@ -44,49 +45,49 @@
   };
 </script>
 
-<h2>{isNew ? 'New exercise' : 'Edit exercise'}</h2>
+<h2>{isNew ? t('newExerciseTitle') : t('editExerciseTitle')}</h2>
 
 <section class="card">
   <label class="field">
-    <span class="muted">Name</span>
-    <input class="input" bind:value={draft.name} placeholder="My breathing" />
+    <span class="muted">{t('name')}</span>
+    <input class="input" bind:value={draft.name} placeholder={t('namePlaceholder')} />
   </label>
   <label class="field">
-    <span class="muted">Description</span>
-    <textarea class="input" rows="2" bind:value={draft.description} placeholder="What it is for"></textarea>
+    <span class="muted">{t('description')}</span>
+    <textarea class="input" rows="2" bind:value={draft.description} placeholder={t('descPlaceholder')}></textarea>
   </label>
 </section>
 
-<h2>Colour</h2>
+<h2>{t('colour')}</h2>
 <section class="card swatches">
   {#each COLOURS as c (c)}
-    <button class="swatch" class:picked={draft.color === c} style="background: {c}" aria-label="Use this colour" onclick={() => (draft.color = c)}></button>
+    <button class="swatch" class:picked={draft.color === c} style="background: {c}" aria-label={t('useColour')} onclick={() => (draft.color = c)}></button>
   {/each}
 </section>
 
-<h2>One breath, in seconds</h2>
+<h2>{t('oneBreathSeconds')}</h2>
 <section class="card">
   {#each phases as part (part.key)}
     <div class="stepper">
       <span>{PHASE_LABEL[part.key]}{part.key === 'hold1' || part.key === 'hold2' ? ' (hold)' : ''}</span>
       <div class="controls">
-        <button aria-label="Less" disabled={draft.pattern[part.key] <= part.min} onclick={() => step(part.key, part.min, -1)}>−</button>
+        <button aria-label={t('less')} disabled={draft.pattern[part.key] <= part.min} onclick={() => step(part.key, part.min, -1)}>−</button>
         <span class="count">{draft.pattern[part.key]}</span>
-        <button aria-label="More" disabled={draft.pattern[part.key] >= MAX_PHASE_SECONDS} onclick={() => step(part.key, part.min, 1)}>+</button>
+        <button aria-label={t('more')} disabled={draft.pattern[part.key] >= MAX_PHASE_SECONDS} onclick={() => step(part.key, part.min, 1)}>+</button>
       </div>
     </div>
   {/each}
   <p class="muted small">{patternText(draft.pattern)}</p>
 </section>
 
-<h2>Breaths</h2>
+<h2>{t('breathsHead')}</h2>
 <section class="card">
   <div class="stepper">
-    <span>Repeats</span>
+    <span>{t('repeats')}</span>
     <div class="controls">
-      <button aria-label="Fewer" disabled={draft.pattern.repeats <= MIN_REPEATS} onclick={() => stepBreaths(-1)}>−</button>
+      <button aria-label={t('fewer')} disabled={draft.pattern.repeats <= MIN_REPEATS} onclick={() => stepBreaths(-1)}>−</button>
       <span class="count">{draft.pattern.repeats}</span>
-      <button aria-label="More" disabled={draft.pattern.repeats >= MAX_REPEATS} onclick={() => stepBreaths(1)}>+</button>
+      <button aria-label={t('more')} disabled={draft.pattern.repeats >= MAX_REPEATS} onclick={() => stepBreaths(1)}>+</button>
     </div>
   </div>
 </section>
@@ -94,11 +95,11 @@
 {#if problem}<p class="problem">{problem}</p>{/if}
 {#if !problem && exerciseProblem(draft)}<p class="muted small">{exerciseProblem(draft)}</p>{/if}
 
-<button class="primary" onclick={save} disabled={!!exerciseProblem(draft)}>Save</button>
+<button class="primary" onclick={save} disabled={!!exerciseProblem(draft)}>{t('save')}</button>
 <div class="row-buttons">
-  {#if !isNew}<button class="ghost" onclick={duplicate}>Duplicate</button>{/if}
-  {#if !isNew}<button class="ghost danger" onclick={remove}>Delete</button>{/if}
-  <button class="ghost" onclick={done}>Cancel</button>
+  {#if !isNew}<button class="ghost" onclick={duplicate}>{t('duplicate')}</button>{/if}
+  {#if !isNew}<button class="ghost danger" onclick={remove}>{t('delete')}</button>{/if}
+  <button class="ghost" onclick={done}>{t('cancel')}</button>
 </div>
 
 <style>

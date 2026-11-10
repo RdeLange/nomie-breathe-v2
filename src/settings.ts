@@ -13,10 +13,13 @@ export type Settings = {
   vibrate: boolean;
 };
 
+// The English default of the note. A note still on this default is written in the current language (see log.ts).
+export const EN_LOG_ENTRY = 'Just finished <breathing> exercise with total of <repeats> repeats taking <minutes>.';
+
 export const DEFAULT_SETTINGS: Settings = {
   repeatsTracker: null,
   minutesTracker: null,
-  logEntry: 'Just finished <breathing> exercise with total of <repeats> repeats taking <minutes>.',
+  logEntry: EN_LOG_ENTRY,
   askBeforeLog: true,
   sound: true,
   vibrate: false,

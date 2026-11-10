@@ -1,3 +1,4 @@
+import { t } from '../i18n/index.svelte';
 // A breathing pattern: how long each part of a breath lasts, and how many breaths. Everything is worked out from the
 // time since the start, so the circle, the words and the count always agree.
 
@@ -6,11 +7,12 @@ export type Pattern = { inhale: number; hold1: number; exhale: number; hold2: nu
 
 export type PhaseId = 'inhale' | 'hold1' | 'exhale' | 'hold2';
 
+// the phase labels follow the current language (read when they are shown)
 export const PHASE_LABEL: Record<PhaseId, string> = {
-  inhale: 'Breathe in',
-  hold1: 'Hold',
-  exhale: 'Breathe out',
-  hold2: 'Hold',
+  get inhale() { return t('inhale'); },
+  get hold1() { return t('hold'); },
+  get exhale() { return t('exhale'); },
+  get hold2() { return t('hold'); },
 };
 
 // One part of a breath, with its start and end in milliseconds from the start of the breath
@@ -77,5 +79,5 @@ export const positionAt = (p: Pattern, ms: number): Position => {
 // The pattern in words, as the library shows it: 4 · 4 · 6 · 0, 6 breaths. A hold of 0 is shown as a dash.
 export const patternText = (p: Pattern): string => {
   const parts = [p.inhale, p.hold1, p.exhale, p.hold2].map((s) => (s > 0 ? String(s) : '–')).join(' · ');
-  return `${parts} · ${p.repeats} ${p.repeats === 1 ? 'breath' : 'breaths'}`;
+  return `${parts} · ${p.repeats === 1 ? t('breathOne', { n: p.repeats }) : t('breathMany', { n: p.repeats })}`;
 };

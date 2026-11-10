@@ -1,3 +1,4 @@
+import { t } from './i18n/index.svelte';
 // The state of the plugin: the exercises, the settings, the history, and the session that runs now.
 // The screens show it and call its actions.
 import { playCue, unlockAudio } from './audio';
@@ -66,7 +67,7 @@ class BreathState {
 
   async deleteExercise(id: string): Promise<boolean> {
     const name = this.exercises.find((e) => e.id === id)?.name ?? '';
-    const res = await this.plugin.confirm('Delete this exercise?', `"${name}" is removed from your exercises. Your history is kept.`);
+    const res = await this.plugin.confirm(t('deleteQ'), t('deleteBody', { name }));
     if (!res?.value) return false;
     this.exercises = this.exercises.filter((e) => e.id !== id);
     this.plugin?.storage.setItem('exercises', $state.snapshot(this.exercises));
@@ -74,7 +75,7 @@ class BreathState {
   }
 
   async clearHistory(): Promise<void> {
-    const res = await this.plugin.confirm('Clear the history?', 'The sessions you finished are removed from the plugin. Your timeline is not changed.');
+    const res = await this.plugin.confirm(t('clearQ'), t('clearBody'));
     if (!res?.value) return;
     this.history = [];
     this.plugin?.storage.setItem('history', []);
@@ -145,7 +146,7 @@ class BreathState {
 
   // Ends the session early, after a confirmation
   async endEarly(): Promise<void> {
-    const res = await this.plugin.confirm('End the breathing now?', 'What you finished so far is kept in your history.');
+    const res = await this.plugin.confirm(t('endQ'), t('endBody'));
     if (res?.value) this.finish(true);
   }
 

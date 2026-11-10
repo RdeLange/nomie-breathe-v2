@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { t, setLanguage } from './i18n/index.svelte';
   import { onMount } from 'svelte';
   import { breath } from './breath-state.svelte';
   import { blankExercise, fromTemplate, TEMPLATES, type Exercise } from './breathing/exercises';
@@ -37,6 +38,7 @@
   const applyNomieValues = (plugin: any) => {
     if (!plugin?.prefs) return;
     palette = paletteFrom(plugin.prefs);
+    setLanguage(plugin.prefs?.language);
     setLocale(plugin.prefs);
     dangerText = dangerTextFrom(plugin.prefs);
     glass = glassFrom(plugin.prefs);
@@ -82,14 +84,14 @@
     </div>
     {#if !inSession && view.name !== 'settings' && view.name !== 'info'}
       <div class="icons">
-        <button aria-label="Settings" onclick={() => (view = { name: 'settings' })}>⚙︎</button>
-        <button aria-label="About" onclick={() => (view = { name: 'info' })}>ⓘ</button>
+        <button aria-label={t('settingsLabel')} onclick={() => (view = { name: 'settings' })}>⚙︎</button>
+        <button aria-label={t('aboutLabel')} onclick={() => (view = { name: 'info' })}>ⓘ</button>
       </div>
     {/if}
   </header>
 
   {#if !breath.loaded}
-    <p class="muted">Loading…</p>
+    <p class="muted">{t('loading')}</p>
   {:else if inSession}
     <Breathing />
   {:else if view.name === 'settings'}
@@ -97,7 +99,7 @@
   {:else if view.name === 'info'}
     <Info back={home} />
   {:else if view.name === 'choose'}
-    <h2>Start from</h2>
+    <h2>{t('startFrom')}</h2>
     <div class="list">
       {#each TEMPLATES as template, i (template.name)}
         <button class="choice" onclick={() => createFromTemplate(i)}>
@@ -110,10 +112,10 @@
       {/each}
       <button class="choice" onclick={createOwn}>
         <span class="dot" style="background: var(--tint)"></span>
-        <span class="text"><span class="title">Your own breathing</span><span class="muted">Choose the lengths yourself.</span></span>
+        <span class="text"><span class="title">{t('yourOwn')}</span><span class="muted">{t('chooseLengths')}</span></span>
       </button>
     </div>
-    <button class="ghost" onclick={home}>Back</button>
+    <button class="ghost" onclick={home}>{t('back')}</button>
   {:else if view.name === 'edit'}
     <Editor exercise={view.exercise} isNew={view.isNew} done={home} />
   {:else if view.name === 'prepare' && prepared}

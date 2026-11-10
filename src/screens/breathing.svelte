@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { t } from '../i18n/index.svelte';
   import { breath } from '../breath-state.svelte';
   import BreathRing from '../components/breath-ring.svelte';
   import { phasesOf, PHASE_LABEL, type PhaseId } from '../breathing/pattern';
@@ -23,16 +24,16 @@
 
   const label = $derived.by(() => {
     if (!session) return '';
-    if (session.finished(breath.now)) return 'Done';
-    if (moment?.ready) return 'Get ready';
+    if (session.finished(breath.now)) return t('done');
+    if (moment?.ready) return t('getReady');
     const phase = position?.phase?.id as PhaseId | undefined;
     return phase ? PHASE_LABEL[phase] : '';
   });
   const sub = $derived.by(() => {
     if (!session || !position) return '';
     if (moment?.ready) return String(Math.ceil(moment.readyLeft / 1000));
-    if (session.finished(breath.now)) return `${session.pattern.repeats} of ${session.pattern.repeats}`;
-    return `${position.cycle + 1} of ${session.pattern.repeats} · ${Math.ceil(position.left / 1000)} s`;
+    if (session.finished(breath.now)) return t('breathOf', { n: session.pattern.repeats, total: session.pattern.repeats });
+    return t('cycleSub', { cycle: position.cycle + 1, total: session.pattern.repeats, s: Math.ceil(position.left / 1000) });
   });
   const week = $derived(thisWeek(breath.history, new Date()));
 
@@ -61,22 +62,22 @@
 
 {#if breath.status === 'done' && breath.summary}
   <section class="card done">
-    <p class="caption">{breath.summary.early ? 'Ended early' : 'Breathing complete'}</p>
-    <h1>{breath.summary.early ? 'Well breathed' : 'Well done'}</h1>
+    <p class="caption">{breath.summary.early ? t('endedEarly') : t('breathingComplete')}</p>
+    <h1>{breath.summary.early ? t('wellBreathed') : t('wellDone')}</h1>
     <p class="big">{breath.summary.repeats} of {session?.pattern.repeats ?? breath.summary.repeats} breaths</p>
     <p class="muted">{breath.summary.exercise} · {clock(breath.summary.seconds * 1000)} of breathing</p>
     <p class="muted">This week: {week.sessions} {week.sessions === 1 ? 'session' : 'sessions'}, {week.minutes} minutes</p>
     {#if breath.logged}
-      <p class="notice">Logged to your timeline.</p>
+      <p class="notice">{t('loggedToTimeline')}</p>
     {:else if breath.settings.askBeforeLog}
-      <button class="primary" onclick={() => breath.logSession()}>Log to timeline</button>
+      <button class="primary" onclick={() => breath.logSession()}>{t('logToTimeline')}</button>
     {/if}
   </section>
-  <button class="ghost" onclick={() => breath.reset()}>Done</button>
+  <button class="ghost" onclick={() => breath.reset()}>{t('done')}</button>
 {:else if session}
   <div class="top">
     <p class="caption">{breath.exercise?.name ?? ''}</p>
-    {#if breath.status === 'paused'}<span class="pill">Paused</span>{/if}
+    {#if breath.status === 'paused'}<span class="pill">{t('paused')}</span>{/if}
   </div>
 
   <BreathRing
@@ -91,9 +92,9 @@
   />
 
   <div class="controls">
-    <button class="main" onclick={() => breath.togglePause()}>{breath.status === 'paused' ? 'Resume' : 'Pause'}</button>
+    <button class="main" onclick={() => breath.togglePause()}>{breath.status === 'paused' ? t('resume') : t('pause')}</button>
   </div>
-  <button class="link danger" onclick={() => breath.endEarly()}>End breathing</button>
+  <button class="link danger" onclick={() => breath.endEarly()}>{t('endBreathing')}</button>
 {/if}
 
 <style>
