@@ -127,7 +127,8 @@
 <style>
   .root { box-sizing: border-box; min-height: 100vh; max-width: 520px; margin: 0 auto; padding: 16px; background: var(--page); color: var(--text); font-size: calc(16px * var(--scale)); line-height: 1.4; }
   /* the plugin page fills the frame, so the glass bar sits at the top edge */
-  :global(body) { margin: 0; }
+  /* the app's text: its iOS font stack (main.css --ios-font), with the app's smoothing */
+  :global(body) { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
   /* the header is a Liquid Glass bar (D-glass): it stays at the top and the content scrolls under it */
   .top { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; margin: -16px -16px 8px; padding: 16px 16px 10px; background: var(--glass-fill); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border-bottom: 1px solid var(--glass-edge); }
   .title { display: flex; align-items: center; gap: 8px; }
